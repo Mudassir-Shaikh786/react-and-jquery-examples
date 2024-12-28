@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<script>
+function ImageClick(e) {
+console.log(e.clientX + "\n" + e.clientY);
+if((e.clientX>=40 && e.clientX<=159) && (e.clientY>=30 && e.clientY<=144)) {
+document.write("32 Pixel Dual Camera")
+} else {
+document.write("Silicon Panel");
+}
+}
+</script>
+</head>
+<body>
+<img src="../public/iphone-black.jpg" onclick="ImageClick(event)">
+</body>
+</html>

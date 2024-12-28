@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arguments Event</title>
+    <script>
+        function Database(btn,e){
+            document.write(`Button Name:${btn.name}<br>X Position: ${e.clientX} <br> Ctrl Key : ${e.ctrlKey}}`);
+        }
+    </script>
+</head>
+<body>
+    <button onclick="Database(this,event)" name="Insert">Insert</button>
+    <button onclick="Database(this,event)" name="Update">Update</button>
+    <button onclick="Database(this,event)" name="Delete">Delete</button>
+</body>
+</html>

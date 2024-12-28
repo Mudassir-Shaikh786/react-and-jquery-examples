@@ -1,0 +1,34 @@
+[
+    {
+    "title": "DevOps with AWS",
+    "rating": 5,
+    "start": "12 Aug 2024",
+    "faculty": "Mr. Veera Babu",
+    "duration": "3 Months",
+    "image": "devops.png"
+    },
+    {
+    "title": "Fullstack Data Science & AI",
+    "rating": 4,
+    "start": "12 Aug 2024",
+    "faculty": "Mr. Daniel",
+    "duration": "4 Months",
+    "image": "ds.png"
+    },
+    {
+    "title": "Fullstack .NET",
+    "rating": 4.5,
+    "start": "12 Aug 2024",
+    "faculty": "Mr. Daniel",
+    "duration": "4 Months",
+    "image": "dotnet.png"
+    },
+    {
+    "title": "Oracle",
+    "rating": 3.4,
+    "start": "12 Aug 2024",
+    "faculty": "Mr. Daniel",
+    "duration": "4 Months",
+    "image": "oracle.png"
+    }
+]    

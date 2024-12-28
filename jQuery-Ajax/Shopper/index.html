@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>link file</title>
+    <script src="../../../node_modules/jquery/dist/jquery.js"></script>
+    <script>
+
+        function LoadPage(pagePath){
+            $.ajax({
+             method:"get",
+             url:pagePath,
+             success:(response)=>{
+                $("section").html(response);
+             },
+             error:(e,status,err)=>{
+                console.log(err);
+             }
+            })
+        }
+
+         $(function(){
+            LoadPage('./home.html');
+
+            $("#btnHome").click(()=>{
+                LoadPage('./home.html');
+            });
+            $("#btnKids").click(()=>{
+                LoadPage('./kids.html');
+            });
+            $("#btnMen").click(()=>{
+                LoadPage('./men.html');
+            });
+            $("#btnWomen").click(()=>{
+                LoadPage('./women.html');
+            });
+            $("#btnSignin").click(()=>{
+                LoadPage('./login.html');
+            });
+
+            $(document).on("click","#btnLogin",()=>{
+                if($("#UserName").val()==="john_nit"&& $("#Password").val()==="john@123"){
+                    LoadPage("./home.html");
+                }else{
+                    LoadPage("./error.html");
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <h2>Shopper Index</h2>
+    <nav>
+        <button id="btnHome">Home</button>
+        <button id="btnKids">Kids</button>
+        <button id="btnWomen">Women</button>
+        <button id="btnMen">Men</button>
+        <button id="btnSignin">Signin</button>
+    </nav>
+    <hr>
+    <section>
+
+    </section>
+</body>
+</html>

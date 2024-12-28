@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products api</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="../../node_modules/jquery/dist/jquery.js"></script>
+    <script>
+        $(function(){
+
+            fetch("https://fakestoreapi.com/products")
+            .then(res=>res.json())
+            .then(products=>{
+                products.map(product=>{
+                    $(`
+                    <div class="card m-2 p-2" style="width:200px">
+                      <img class="card-img-top" src=${product.image} height="130">
+                      <div class="card-header" style="height:140ox">
+                        ${product.price}
+                        </div>
+                        <div class="card-footer">
+                           <button id="btnAdd" class="bi bi-cart4 btn btn-warning w-100"> Add T0 Cart </button>
+                           </div>
+                           </div>
+                      `).appendTo("main");
+                })
+            });
+
+            $(document).on("click","#btnAdd",()=>{
+                alert("Add Clicked");
+            })
+        })
+    </script>
+</head>
+<body class="container-fluid">
+    <main class="d-flex flex-wrap">
+
+    </main>
+</body>
+</html>

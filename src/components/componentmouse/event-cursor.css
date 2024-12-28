@@ -1,0 +1,7 @@
+.thumbnail {
+    border: 2px solid gray;
+    }
+    .thumbnail:hover {
+    border:2px solid blue;
+    cursor: grab;
+    }

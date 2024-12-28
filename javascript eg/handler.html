@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<script>
+function InsertClick(){
+document.write("Record Inserted");
+}
+function bodyload(){
+var btnDelete = document.createElement("button");
+btnDelete.innerHTML = "Delete";
+btnDelete.addEventListener("click", function(){
+document.write("Record Deleted");
+})
+document.querySelector("body").appendChild(btnDelete);
+document.getElementById("btnUpdate").addEventListener("click",()=>{
+document.write("Record Updated Successfully..");
+})
+}
+</script>
+</head>
+<body onload="bodyload()">
+<button id="btnUpdate">Update</button>
+<button onclick="InsertClick()">Insert</button>
+</body>
+</html>

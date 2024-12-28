@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>event argument</title>
+    <script>
+        function bodyload(){
+            document.getElementById("btnDetails").addEventListener("click", function(e){
+                document.write(`
+                Button Id: ${e.target.id}<br>
+                X position: ${e.clientX}<br>
+                Ctrl: ${e.ctrlKey} <br>
+                Button Class: ${e.target.className}
+                `);
+            })
+        }
+    </script>
+</head>
+<body onload="bodyload()">
+    <button class="btn btn-primary" id="btnDetails">Details</button>
+</body>
+</html>
