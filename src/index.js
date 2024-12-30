@@ -33,7 +33,6 @@ import { RegExp } from './components/Reg-Expression/regExp';
 import { FakestoreIndex } from './components/Fake-Store/Fake-StoreApp/fakestore-index';
 import { CookiesProvider } from 'react-cookie';
 
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
