@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        class HDFC_Bank_Version1
+        {
+            Personal = "Personal Banking Services<br>";
+            Print(){
+                document.write(this.Personal);
+            }
+        }
+        class HDFC_Bank_Version2 extends HDFC_Bank_Version1
+        {
+            NRI = "NRI Banking Services<br>";
+            Print(){
+                super.Print();
+                document.write(this.NRI);
+            }
+        }
+        class HDFC_Bank_Version3 extends HDFC_Bank_Version2
+        {
+            Loans = "Housing Loan, Personal Loan<br>";
+            Print(){
+                super.Print();
+                document.write(this.Loans);
+            }
+        }
+        function InstallClick(){
+            var ver = document.querySelector("select").value;
+
+            switch(ver){
+                case "ver1":
+                    document.write(`<h2>Version 1 Installed </h2>`);
+                    let obj1 = new HDFC_Bank_Version1();
+                    obj1.Print();
+                    break;
+
+                    case "ver2":
+                    document.write(`<h2>Version 2 Installed </h2>`);
+                    let obj2 = new HDFC_Bank_Version2();
+                    obj2.Print();
+                    break;
+
+                    case "ver3":
+                    document.write(`<h2>Version 3 Installed </h2>`);
+                    let obj3 = new HDFC_Bank_Version3();
+                    obj3.Print();
+                    break;
+                    default:
+                    document.write("please select a version");
+                    
+            }
+        }
+    </script>
+</head>
+<body>
+    <select>
+        <option>Select Version</option>
+        <option value="ver1">Version-1 [2022]</option>
+        <option value="ver2">Version-2 [2023]</option>
+        <option value="ver3">Version-3 [Latest]</option>
+    </select>
+    <button onclick="InstallClick()">Install</button>
+</body>
+</html>

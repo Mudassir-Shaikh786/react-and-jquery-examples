@@ -1,245 +1,220 @@
-import axios from "axios"; 
-import { useEffect, useRef, useState,} from "react" 
-export function FakeStore() 
-{ 
-const [categories, setCategories] = useState([]); 
-const [products, setProducts] = useState([{id:0, title:'', price:0, description:'', image:'', rating:{rate:0, count:0}}]); 
-const [cartItems, setCartItems] = useState([]); 
-const [cartCount, setCartCount] = useState(); 
-const [searchTerm, setSearchTerm] = useState(''); 
-const [ icon, setIcon] = useState('btn btn-light mx-2 bi bi-heart');
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-const calculateTotal = () => {
-return cartItems.reduce((total, item) => total + item.price, 0).toFixed(2);
-};
+export function FakeStore() {
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+  const [cartCount, setCartCount] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [icon, setIcon] = useState('btn btn-light mx-2 bi bi-heart');
 
-function GetCartCount(){ 
-setCartCount(cartItems.length);
-}
-function iconchange(){
-setIcon('btn btn-light mx-2 bi bi-heart-fill');
-}
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => total + item.price, 0).toFixed(2);
+  };
 
-function LoadCategories(){ 
-axios.get(`https://fakestoreapi.com/products/categories`) 
-.then(response=>{ 
-response.data.unshift('all'); 
-setCategories(response.data); 
-}) 
-} 
+  const LoadCategories = () => {
+    axios.get(`http://127.0.0.1:5050/products-categories`)
+      .then(response => {
+        response.data.unshift('all');
+        setCategories(response.data);
+      });
+  };
 
-function LoadProducts(url){ 
-axios.get(url) 
-.then(response=>{ 
-setProducts(response.data); 
-}) 
-} 
+  const LoadProducts = (url) => {
+    axios.get(url)
+      .then(response => {
+        setProducts(response.data);
+      });
+  };
 
-useEffect(()=>{ 
-LoadCategories(); 
-LoadProducts('https://fakestoreapi.com/products'); 
-GetCartCount(); 
-},[])
-
-function handleCategoryChange(e){ 
-if(e.target.value==="all") { 
-LoadProducts('https://fakestoreapi.com/products'); 
-} else { 
-LoadProducts(`https://fakestoreapi.com/products/category/${e.target.value}`); 
-} 
-} 
-
-function handleAddToCartClick(id){ 
-axios.get(`https://fakestoreapi.com/products/${id}`) 
-.then(response=>{ 
-cartItems.push(response.data); 
-alert(`${response.data.title}\nAdded to Cart`); 
-GetCartCount(); 
-}) 
-} 
-
-function handleRemoveClick(id){
-axios.get(`https://fakestoreapi.com/products/${id}`)
-.then(response=>{
-cartItems.pop(response.data);
-alert(`${response.data.title}\n Delete Item`);
-GetCartCount();
-})
-}
-
-const filteredProducts = products.filter(product =>
-product.title.toLowerCase().includes(searchTerm.toLowerCase())
-);
-
-function handleSearchChange(e){ 
-setSearchTerm(e.target.value);
-} 
-
-function handleAllClick(){
-LoadProducts('https://fakestoreapi.com/products');
-}
-
-function electronicsClick(){
-LoadProducts('https://fakestoreapi.com/products/category/electronics');
-}
-
-function mensClick(){
-LoadProducts(`https:fakestoreapi.com/products/category/men's clothing`);
-}
-
-function handlePressClick(){
-LoadProducts('https://fakestoreapi.com/products/category/jewelery');
-}
-
-function handlefasionClick(){
-LoadProducts(`https://fakestoreapi.com/products/category/women's clothing`);
-}
-
-function handleRatingChange(e){ 
-axios.get('https://fakestoreapi.com/products') 
-.then(response=>{ 
-response.data.filter(product=> 
-product.rating.rate>e.target.value);  
-})
-} 
-
-return( 
-    <div className="container-fluid"> 
-        <header className="d-flex bg-danger text-light fs-6 justify-content-between p-2 border mt-2"> 
-    <div> 
-        <span className="fs-4">Fakestore</span> 
-    </div> 
-
-    <div> 
-        <div className="input-group"> 
-            <input onChange={handleSearchChange} value={searchTerm} type="text" placeholder="Search by name" className="form-control"/> 
-                <button className="btn btn-warning bi bi-search"></button> 
-        </div> 
-    </div> 
-
-    <nav> 
-        <button className="text-primary btn btn-light me-2" style={{width:'160px'}} onClick={handleAllClick}>All</button>
-        <button className="text-primary btn btn-light" style={{width:'160px'}} onClick={electronicsClick}>  Electronics  </button>
-        <button className="text-primary ms-2 btn btn-light" style={{width:'160px'}} onClick={mensClick}> Men's Clothing</button> 
-        <button className="text-primary ms-2 btn btn-light"style={{width:'160px'}} onClick={handlefasionClick}> Women's Clothing </button> 
-        <button className="text-primary ms-2 btn btn-light"style={{width:'160px'}} onClick={handlePressClick}> Jewelery </button> 
-    </nav> 
-
-    <div> 
-        <button className="btn btn-light"><span className="bi bi-person"></span></button> 
-        <button onClick={iconchange} className={icon}></button> 
-        <button data-bs-toggle="modal" data-bs-target="#cart" className="btn btn-light bi bi-cart position-relative"><span className="badge bg-danger rounded rounded-circle position-absolute">{cartCount}</span></button>
-
-    <div className="modal fade" id="cart"> 
-        <div className="modal-dialog"> 
-        <div className="modal-content"> 
-        <div className="modal-header"> 
-        <h3 className="text-primary">Your Cart Items</h3> 
-        <button className="btn btn-close" 
-        data-bs-dismiss="modal"></button> 
-    </div> 
-
-    <div className="modal-body"> 
-        <table className="table table-hover"> 
-        <thead> 
-        <tr> 
-        <th >Title</th> 
-        <th>Preview</th> 
-        <th>Price</th> 
-    </tr> 
-    </thead> 
-    <tbody> 
-    { 
-
-    cartItems.map(item=> 
-    <tr key={item.id} > 
-        <td>{item.title}</td> 
-        <td><img src={item.image} width="50" height="50" /></td> 
-        <td> {item.price} </td> 
-        <td> <button onClick={()=>handleRemoveClick(item.id)} className="bi bi-trash btn btn-danger"></button> </td> 
-    </tr> 
-    ) 
+  const handleCategoryChange = (e) => {
+    if (e.target.value === "all") {
+      LoadProducts('http://127.0.0.1:5050/products');
+    } else {
+      LoadProducts(`http://127.0.0.1:5050/category/${e.target.value}`);
     }
-    </tbody> 
+  };
 
-    <tfoot> 
-        <tr>
-         <th colSpan="2">Total Amount:</th> 
-         <td className="text-primary"> {calculateTotal()} </td> 
-        </tr> 
-       </tfoot> 
-      </table> 
-     </div> 
-    </div> 
-   </div> 
-  </div> 
- </div> 
-</header> 
+  const handleAddToCartClick = (id) => {
+    axios.get(`http://127.0.0.1:5050/products/${id}`)
+      .then(response => {
+        // Check if item is already in the cart
+        const existingItem = cartItems.find(item => item.id === response.data.id);
+        if (!existingItem) {
+          // If item is not in cart, add it
+          const updatedCart = [...cartItems, response.data];  // Create a new array including the new product
+          setCartItems(updatedCart);  // Update state with the new cart array
+          setCartCount(updatedCart.length); // Update cart count
+          alert(`${response.data.title} added to Cart`);
+        } else {
+          alert(`${response.data.title} is already in the cart`);
+        }
+      })
+      .catch(error => {
+        console.error("Error adding product to cart:", error);
+      });
+  };
+  
 
-    <section className="mt-3 row"> 
-        <nav className="col-2"> 
-        <div className="mb-3"> 
-        <label className="form-label fw-bold">Select Category</label> 
+  const handleRemoveClick = (id) => {
+    // Removing item from cart (without mutating the state)
+    setCartItems((prevItems) => {
+      const updatedCart = prevItems.filter(item => item.id !== id);
+      setCartCount(updatedCart.length); // Updating cart count
+      return updatedCart;
+    });
+    alert(`Item removed from Cart`);
+  };
 
-        <div> 
-    <select onChange={handleCategoryChange} className="form-select"> 
-    { 
-    categories.map(category=><option value={category} 
-    key={category}>{category.toUpperCase()}</option>) 
-    } 
-   </select> 
-  </div> 
- </div> 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
-    <div className="my-3"> 
-    <label>Rating</label> 
+  const handleRatingChange = (e) => {
+    const ratingThreshold = parseInt(e.target.value, 10);
+    axios.get('http://127.0.0.1:5050/products')
+      .then(response => {
+        const filteredProducts = response.data.filter(product => product.rating.rate >= ratingThreshold);
+        setProducts(filteredProducts);
+      });
+  };
 
-   <div> 
-    <div> 
-        <input onChange={handleRatingChange} type="checkbox" value={4}  /> 
-        <span>4 <span className="bi bi-star-fill"></span> above </span> 
-    </div> 
+  useEffect(() => {
+    LoadCategories();
+    LoadProducts('http://127.0.0.1:5050/products');
+  }, []);
 
-     <div> 
-        <input onChange={handleRatingChange} type="checkbox" value={3}  /> 
-        <span>3 <span className="bi bi-star-fill"></span> above </span> 
-        </div> 
-      </div> 
-     </div> 
-    </nav> 
+  const filteredProducts = products.filter(product =>
+    product.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-    {filteredProducts.length > 0 ? (
-    <main className="col-10 d-flex flex-wrap overflow-auto" 
-    style={{height:'600px'}}> 
+  return (
+    <div className="container-fluid">
+      <header className="d-flex bg-danger text-light fs-6 justify-content-between p-2 border mt-2">
+        <div>
+          <span className="fs-4">Fakestore</span>
+        </div>
 
-    {filteredProducts.map(product=> 
-    <div  key={product.id} className="card m-2 p-2" style={{width:'220px'}}> 
-    <img className="card-img-top" height="120" src={product.image} /> 
-    <div className="card-header overflow-auto" style={{height:'100px'}}> 
-    {product.title} 
-    </div> 
+        <div>
+          <div className="input-group">
+            <input onChange={handleSearchChange} value={searchTerm} type="text" placeholder="Search by name" className="form-control" />
+            <button className="btn btn-warning bi bi-search"></button>
+          </div>
+        </div>
 
-    <div className="card-body" > 
-        <dl> 
-            <dt>Price</dt> 
-            <dd>{product.price}</dd> 
-            <dt>Rating</dt> 
-            <dd> {product.rating.rate} <span className="bi bi-star-fill text-success"></span> </dd> 
-        </dl> 
-    </div> 
+        <nav>
+          <button className="text-primary btn btn-light me-2" style={{ width: '160px' }} onClick={() => LoadProducts('http://127.0.0.1:5050/products')}>All</button>
+          <button className="text-primary btn btn-light" style={{ width: '160px' }} onClick={() => LoadProducts('http://127.0.0.1:5050/category/electronics')}>Electronics</button>
+          <button className="text-primary ms-2 btn btn-light" style={{ width: '160px' }} onClick={() => LoadProducts(`http://127.0.0.1:5050/category/men's clothing`)}>Men's Clothing</button>
+          <button className="text-primary ms-2 btn btn-light" style={{ width: '160px' }} onClick={() => LoadProducts(`http://127.0.0.1:5050/category/women's clothing`)}>Women's Clothing</button>
+          <button className="text-primary ms-2 btn btn-light" style={{ width: '160px' }} onClick={() => LoadProducts('http://127.0.0.1:5050/category/jewelery')}>Jewelry</button>
+        </nav>
 
-    <div className="card-footer"> 
-        <button onClick={()=> handleAddToCartClick(product.id)} 
-        className="btn btn-warning w-100"> <span className="bi bi-cart4"> Add to Cart </span> </button> 
-      </div> 
-    </div> 
-    )}  
-    
-    </main> 
-      ) : (
-        <p className="text-center text-danger fs-3">No products found.</p>
-      )}
-   </section> 
- </div> 
-    ) 
-} 
+        <div>
+          <button className="btn btn-light"><span className="bi bi-person"></span></button>
+          <button onClick={() => setIcon('btn btn-light mx-2 bi bi-heart-fill')} className={icon}></button>
+          <button data-bs-toggle="modal" data-bs-target="#cart" className="btn btn-light bi bi-cart position-relative">
+            <span className="badge bg-danger rounded-circle position-absolute">{cartCount}</span>
+          </button>
+
+          {/* Cart Modal */}
+          <div className="modal fade" id="cart">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h3 className="text-primary">Your Cart Items</h3>
+                  <button className="btn btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div className="modal-body">
+                  <table className="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Title</th>
+                        <th>Preview</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {cartItems.map(item => (
+                        <tr key={item.id}>
+                          <td>{item.title}</td>
+                          <td><img src={item.image} width="50" height="50" alt={item.title} /></td>
+                          <td>{item.price}</td>
+                          <td><button onClick={() => handleRemoveClick(item.id)} className="bi bi-trash btn btn-danger"></button></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th colSpan="2">Total Amount:</th>
+                        <td className="text-primary">{calculateTotal()}</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section className="mt-3 row">
+        <nav className="col-2">
+          <div className="mb-3">
+            <label className="form-label fw-bold">Select Category</label>
+            <select onChange={handleCategoryChange} className="form-select">
+              {categories.map(category => (
+                <option value={category} key={category}>{category.toUpperCase()}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="my-3">
+            <label>Rating</label>
+            <div>
+              <div>
+                <input onChange={handleRatingChange} type="checkbox" value={4} />
+                <span>4 <span className="bi bi-star-fill"></span> and above</span>
+              </div>
+              <div>
+                <input onChange={handleRatingChange} type="checkbox" value={3} />
+                <span>3 <span className="bi bi-star-fill"></span> and above</span>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <main className="col-10 d-flex flex-wrap overflow-auto" style={{ height: '600px' }}>
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map(product => (
+              <div key={product.id} className="card m-2 p-2" style={{ width: '220px' }}>
+                <img className="card-img-top" height="120" src={product.image} alt={product.title} />
+                <div className="card-header overflow-auto" style={{ height: '100px' }}>
+                  {product.title}
+                </div>
+                <div className="card-body">
+                  <dl>
+                    <dt>Price</dt>
+                    <dd>{product.price}</dd>
+                    <dt>Rating</dt>
+                    <dd>{product.rating.rate} <span className="bi bi-star-fill text-success"></span></dd>
+                  </dl>
+                </div>
+                <div className="card-footer">
+                  <button onClick={() => handleAddToCartClick(product.id)} className="btn btn-warning w-100">
+                    <span className="bi bi-cart4"> Add to Cart</span>
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-danger fs-3">No products found.</p>
+          )}
+        </main>
+      </section>
+    </div>
+  );
+}
