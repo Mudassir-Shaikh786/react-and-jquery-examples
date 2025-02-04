@@ -41,12 +41,14 @@ import { FakestoreIndex } from './components/Fake-Store/Fake-StoreApp/fakestore-
 import { CookiesProvider } from 'react-cookie';
 import { RegisterUser } from './constructor/super-register-user';
 import { UserRegister } from './constructor/class-constructor';
+import { Movies } from './components/Movie/Movies';
+import { TimerDemo } from './components/timer-demo/timer-demo';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
      <CookiesProvider>
-        <FakeStore />
+        <TimerDemo />
      </CookiesProvider>
   </React.StrictMode>
 );
